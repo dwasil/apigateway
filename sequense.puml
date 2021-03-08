@@ -1,0 +1,41 @@
+@startuml Apigateway
+
+title Apigateway + JWT token processing
+
+actor Client
+
+== JWT Token obtaining ==
+
+Client -> RevProxy: JWT Token request
+activate RevProxy
+RevProxy -> Apigetway: JWT Token request
+activate Apigetway
+Apigetway -> AuthProvider: Auth data
+activate AuthProvider
+AuthProvider -> AuthProvider: Check auth data
+AuthProvider --> Apigetway: Check result
+deactivate AuthProvider
+Apigetway -> Apigetway: Generate JWT token
+Apigetway --> RevProxy: JWT Token
+deactivate Apigetway
+RevProxy --> Client: JWT Token
+deactivate RevProxy
+
+
+== Main loop ==
+
+Client -> RevProxy: Request
+activate RevProxy
+RevProxy -> Apigetway: Request
+activate Apigetway
+Apigetway -> Apigetway: Check JWT token
+Apigetway -> Resource: Request
+activate Resource
+Resource --> Apigetway: Response
+deactivate Resource
+Apigetway --> RevProxy: Response
+deactivate Apigetway
+RevProxy --> Client: Response
+deactivate RevProxy
+
+@enduml
