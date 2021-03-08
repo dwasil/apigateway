@@ -1,0 +1,11 @@
+[Unit]
+Description=apigateway
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+ExecStart=/bin/bash -c ${API_GATEWAY_PATH}
+
+[Install]
+WantedBy=multi-user.target
